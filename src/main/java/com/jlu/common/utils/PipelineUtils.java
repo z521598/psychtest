@@ -1,6 +1,6 @@
 package com.jlu.common.utils;
 
-import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.common.exception.PsychtestRuntimeException;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedHashMap;
@@ -12,18 +12,18 @@ import java.util.Map;
 public class PipelineUtils {
     public static String getFullModule(String owner, String repository) {
         if (StringUtils.isBlank(owner) || StringUtils.isBlank(repository)) {
-            throw new PipelineRuntimeException("模块名字不合法");
+            throw new PsychtestRuntimeException("模块名字不合法");
         }
         return owner + "/" + repository;
     }
 
     public static String getRepoNameByModule(String module) {
         if (StringUtils.isBlank(module)) {
-            throw new PipelineRuntimeException("模块名字不合法");
+            throw new PsychtestRuntimeException("模块名字不合法");
         }
         String[] elements = module.split("/");
         if (elements.length != 2) {
-            throw new PipelineRuntimeException("模块名字不合法");
+            throw new PsychtestRuntimeException("模块名字不合法");
         }
         return elements[1];
     }

@@ -27,11 +27,10 @@ public class LoginController extends AbstractController {
             model.addAttribute("wrongMsg", "用户名或者密码错误");
             return "login";
         } else if (Role.ADMIN.equals(activeUser.getRole())) {
-
+            return "adminMain";
         } else {
-
+            return "userMain";
         }
-        return "";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html ; charset = UTF-8"
-	pageEncoding="UTF-8" errorPage="error.jsp"%>
+	pageEncoding="UTF-8" errorPage="../../error.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 	String path = request.getContextPath();
@@ -13,11 +13,11 @@
 	<base href="<%=basePath%>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>美团商家后台管理系统</title>
-	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="css/main.css" type="text/css" rel="stylesheet" />
 	<link href="css/selm.css" type="text/css" rel="stylesheet" />
 	<script src="js/jquery-1.9.1.min.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<div class="header">
@@ -35,7 +35,7 @@
 			</li>
 			<li>
 				<img src="img/sellMain_images/32/200.png" />&nbsp;&nbsp; 
-				<a class="loginout" href="WEB-INF/views/login.jsp">退出</a>
+				<a class="loginout" href="login.jsp">退出</a>
 			</li>
 		</ul>
 	</div>
@@ -130,7 +130,7 @@
 			</div>
 			<div class="span10 content-right" style = "overflow-y:hidden">
 
-				<iframe src="sellerNav/home.jsp" class="iframe" id = "ifr"></iframe>
+				<iframe src="../../sellerNav/home.jsp" class="iframe" id = "ifr"></iframe>
 
 			</div>
 		</div>

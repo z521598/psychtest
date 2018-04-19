@@ -1,6 +1,6 @@
 package com.jlu.common.aop.utils;
 
-import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.common.exception.PsychtestRuntimeException;
 import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.common.utils.DateUtils;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class AccessLogHelper {
         String method = request.getMethod();
         String requestUrl = request.getRequestURL().toString();
         String queryString = request.getQueryString(); // 问号传值
-        if(!(e instanceof PipelineRuntimeException)){
+        if(!(e instanceof PsychtestRuntimeException)){
             request.setAttribute("error", true);
             LOG.error("{} {} {} params:{} end,error:{}", username, method, requestUrl, queryString, e);
         }

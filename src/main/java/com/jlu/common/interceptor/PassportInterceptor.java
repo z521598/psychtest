@@ -1,6 +1,6 @@
 package com.jlu.common.interceptor;
 
-import com.jlu.common.aop.annotations.LogExecTime;
+
 import com.jlu.common.permission.exception.ForbiddenException;
 import com.jlu.common.permission.service.IPermissionService;
 import com.jlu.common.utils.PipelineConfigReader;
@@ -28,7 +28,7 @@ public class PassportInterceptor implements HandlerInterceptor {
     @Autowired
     private IUserDao userDao;
 
-    @LogExecTime
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {

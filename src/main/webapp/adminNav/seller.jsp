@@ -24,7 +24,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	}
     </script>
   </head>
-  <body>
   <body style = "background-color : #00BB99;">
   <div class = "left">
   	<table class = "solidTable">

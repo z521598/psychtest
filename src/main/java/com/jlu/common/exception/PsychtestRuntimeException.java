@@ -7,7 +7,7 @@ import java.util.Locale;
 /**
  * Created by langshiquan on 18/1/10.
  */
-public class PipelineRuntimeException extends RuntimeException {
+public class PsychtestRuntimeException extends RuntimeException {
 
     /**
      *
@@ -19,7 +19,7 @@ public class PipelineRuntimeException extends RuntimeException {
     /**
      *
      */
-    public PipelineRuntimeException() {
+    public PsychtestRuntimeException() {
         super();
     }
 
@@ -27,7 +27,7 @@ public class PipelineRuntimeException extends RuntimeException {
      * @param key
      * @param varargs
      */
-    public PipelineRuntimeException(String key, Object... varargs) {
+    public PsychtestRuntimeException(String key, Object... varargs) {
         super(I18nMsg.createMsg(key, varargs).toString());
         errorMsg = new I18nMsg(key, varargs);
         this.addErrorMsg(errorMsg);
@@ -38,7 +38,7 @@ public class PipelineRuntimeException extends RuntimeException {
      * @param key
      * @param varargs
      */
-    public PipelineRuntimeException(Throwable cause, String key, Object... varargs) {
+    public PsychtestRuntimeException(Throwable cause, String key, Object... varargs) {
         super(I18nMsg.createMsg(key, varargs).toString(), cause);
 
         errorMsg = new I18nMsg(key, varargs);
@@ -48,7 +48,7 @@ public class PipelineRuntimeException extends RuntimeException {
     /**
      * @param cause
      */
-    public PipelineRuntimeException(Throwable cause) {
+    public PsychtestRuntimeException(Throwable cause) {
         super(cause);
     }
 

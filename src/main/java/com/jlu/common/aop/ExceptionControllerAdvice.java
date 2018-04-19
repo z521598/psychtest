@@ -1,7 +1,7 @@
 package com.jlu.common.aop;
 
 import com.jlu.common.aop.utils.AccessLogHelper;
-import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.common.exception.PsychtestRuntimeException;
 import com.jlu.common.permission.exception.ForbiddenException;
 import com.jlu.common.web.ResponseBean;
 import org.springframework.http.HttpStatus;
@@ -37,9 +37,9 @@ public class ExceptionControllerAdvice {
         return ResponseBean.fail("请求参数格式有误");
     }
 
-    @ExceptionHandler(PipelineRuntimeException.class)
+    @ExceptionHandler(PsychtestRuntimeException.class)
     @ResponseBody
-    public ResponseBean pipelineRuntimeExceptionHandler(PipelineRuntimeException pre) {
+    public ResponseBean pipelineRuntimeExceptionHandler(PsychtestRuntimeException pre) {
         return ResponseBean.fail(pre.getMessage());
     }
 
