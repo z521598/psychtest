@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--引入properties文件-->
+    <context:property-placeholder location="classpath:jdbc.properties" ignore-unresolvable="true"/>
+    <!--数据源-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" autowire="no">
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <!--连接池中保留的最小连接数-->
+        <property name="minPoolSize">
+            <value>${citool.app.db.minPoolSize}</value>
+        </property>
+        <!--连接池中保留的最大连接数。Default: 15 -->
+        <property name="maxPoolSize">
+            <value>${citool.app.db.maxPoolSize}</value>
+        </property>
+        <!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
+        <property name="initialPoolSize">
+            <value>${citool.app.db.initialPoolSize}</value>
+        </property>
+        <!--连接空闲时间,mysql默认8小时内未使用则连接被丢弃，线上mysql设置的是600，比600略微小一些。若为0则永不丢弃，Default: 0 -->
+        <property name="maxIdleTime">
+            <value>${citool.app.db.maxIdleTime}</value>
+        </property>
+        <!--当连接池中的连接耗尽的时候c3p0连接同时获取的连接数。Default: 3 -->
+        <property name="acquireIncrement">
+            <value>${citool.app.db.acquireIncrement}</value>
+        </property>
+        <!--
+            JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements
+            属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。
+            如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0
+        -->
+        <property name="maxStatements">
+            <value>0</value>
+        </property>
+        <!--600秒检查所有连接池中的空闲连接。Default: 0 -->
+        <property name="idleConnectionTestPeriod">
+            <value>120</value>
+        </property>
+        <!--
+            定义所有连接测试都执行的测试语句。在使用连接测试的情况下这个一显著提高测试速度。
+            在配置了AutomaticTestTable属性后，此配置失效，Default: null
+        -->
+        <property name="preferredTestQuery">
+            <value>select 1 from dual</value>
+        </property>
+        <!--如果设为true那么在取得连接的同时将校验连接的有效性。Default: false -->
+        <property name="testConnectionOnCheckin">
+            <value>true</value>
+        </property>
+
+        <!--定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
+        <property name="acquireRetryAttempts">
+            <value>30</value>
+        </property>
+
+        <!--
+            获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效
+            保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试
+            获取连接失败后该数据源将申明已断开并永久关闭。Default: false
+        -->
+        <property name="breakAfterAcquireFailure">
+            <value>false</value>
+        </property>
+        <!--如果设为true那么在取得连接的同时将校验连接的有效性。Default: false -->
+        <property name="testConnectionOnCheckout" value="true"/>
+
+    </bean>
+
+    <!--整合hibernate-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <!--指定二级缓存的外部实现类-->
+                <!--<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>-->
+                <!--!!!!!注意：大部分属性需要带hibernate标签!!!!!!!!!!-->
+                <!--为true表示将Hibernate发送给数据库的sql显示出来 -->
+                <prop key="hibernate.show_sql">false</prop>
+                <!--对sql语句进行排版-->
+                <prop key="hibernate.format_sql">false</prop>
+                <!-- 添加自动创建数据库表格的配置 create|update|create-drop|validate-->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <!-- SQL方言，这边设定的是MySQL -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <!--getCurrentSession配置：thread（jdbc本地事务）|jta（jta事务） -->
+                <prop key="current_session_context_class">thread</prop>
+                <prop key="connection.autoReconnect">true</prop>
+                <prop key="connection.autoReconnectForPools">true</prop>
+                <prop key="connection.is-connection-validation-required">true</prop>
+                <!--与spring结合-->
+                <prop key="hibernate.current_session_context_class">
+                    org.springframework.orm.hibernate4.SpringSessionContext
+                </prop>
+            </props>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>com.jlu</value>
+            </list>
+        </property>
+    </bean>
+    <!--spring整合hibernate事务-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--启用事务注解-->
+    <tx:annotation-driven/>
+    <aop:config>
+        <aop:pointcut id="ServiceOperation"
+                      expression="(execution(* com.jlu..*ServiceImpl.*(..)))"/>
+        <aop:pointcut id="ExecutorOperation"
+                      expression="(execution(* com.jlu..*Executor.*(..)))"/>
+        <!--<aop:pointcut id="ValueGeneratorrOperation"-->
+                      <!--expression="(execution(* com.jlu..*Generator.*(..)))"/>-->
+        <aop:advisor pointcut-ref="ServiceOperation" advice-ref="txAdvice"/>
+        <aop:advisor pointcut-ref="ExecutorOperation" advice-ref="txAdvice"/>
+        <!--<aop:advisor pointcut-ref="ValueGeneratorrOperation" advice-ref="valueTxAdvice"/>-->
+    </aop:config>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" read-only="false" propagation="NOT_SUPPORTED"/>
+            <tx:method name="*WithTransaction" read-only="false" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <tx:advice id="valueTxAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" read-only="true" propagation="NOT_SUPPORTED"/>
+        </tx:attributes>
+    </tx:advice>
+
+
+</beans>
