@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by Administrator on 2018/4/19.
  */
@@ -21,16 +23,19 @@ public class LoginController extends AbstractController {
     IUserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(User user, Model model) {
+    public String login(User user, Model model, HttpServletRequest request) {
         User activeUser = userService.getUserByNameAndPwd(user.getUsername(), user.getPassword());
         if (activeUser == null) {
             model.addAttribute("wrongMsg", "用户名或者密码错误");
             return "login";
-        } else if (Role.ADMIN.equals(activeUser.getRole())) {
-            return "adminMain";
-        } else {
-            return "userMain";
         }
+        request.getSession().setAttribute(User.CURRENT_USER_NAME, activeUser);
+        if (Role.ADMIN.equals(activeUser.getRole())) {
+            return "main/admin";
+        } else {
+            return "main/user";
+        }
+
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)

@@ -6,11 +6,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-  	<link href="../css/form.css" rel='stylesheet' type='text/css' />
+  	<link href="/resources/css/form.css" rel='stylesheet' type='text/css' />
   	<meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="<%=basePath%>">
     <title>修改密码</title>
-     <script type="text/javascript" src = "js/jquery-1.9.1.min.js"></script>
+	  <script type="text/javascript" src = "/resources/js/jquery-1.9.1.min.js"></script>
     <script type="application/x-javascript"> 
     addEventListener("load", function() { 
     
@@ -45,13 +45,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    <div class="clear"> </div>
 		    <div class="lable-2">
    				<input type = "hidden" name = "uid" value = "${admin.uid}"/>
-		   		<input type="password" name = "upassword" id = "newp" placeholder = "新密码" >
-		    	<input type="password" id = "renewp" placeholder = "确认新密码" >
-		    	<input type="password" id = "oldp" placeholder = "旧密码">
+		   		<input type="password" name = "upassword" id = "newp" placeholder = "新密码" />
+		    	<input type="password" id = "renewp" placeholder = "确认新密码" />
+		    	<input type="password" id = "oldp" placeholder = "旧密码"/>
 			</div>
 			<div class="clear"> </div>
 			<div class="submit">
-				<input type="submit" value="确认修改" >
+				<input type="submit" value="确认修改" />
 			</div>
 			<div class="clear"> </div>
 		</form>

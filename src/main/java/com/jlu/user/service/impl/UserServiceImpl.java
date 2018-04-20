@@ -25,10 +25,11 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 通过用户获得密码
+     *
      * @param username
      * @return
      */
-    public User getUserByNameAndPwd(String username,String password) {
+    public User getUserByNameAndPwd(String username, String password) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("username", username);
         conditionAndSet.put("password", password);
@@ -52,5 +53,12 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User getUserByName(String username) {
         return userDao.get(username);
+    }
+
+    @Override
+    public List<User> findAll() {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("role", Role.USER);
+        return userDao.findByProperties(conditionAndSet);
     }
 }

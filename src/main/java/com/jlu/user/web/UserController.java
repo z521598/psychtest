@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/4/19.
@@ -37,4 +40,15 @@ public class UserController extends AbstractController {
             return true;
         }
     }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView all() {
+        ModelAndView modelAndView = new ModelAndView();
+        List<User> users = userService.findAll();
+        modelAndView.addObject("users", users);
+        modelAndView.setViewName("user/users");
+        return modelAndView;
+    }
+
 }

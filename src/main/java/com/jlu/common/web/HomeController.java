@@ -28,12 +28,11 @@ public class HomeController {
             return "login";
         }
         if (Role.ADMIN.equals(((User) user).getRole())) {
-
+            return "main/admin";
+        } else {
+            return "main/user";
         }
-        if (Role.USER.equals(((User) user).getRole())) {
 
-        }
-        return "home";
     }
 
     @PermissionPass
