@@ -6,21 +6,24 @@
     <title>问卷</title>
 </head>
 <body>
-<form action="/record/submit/${paperBean.id}" method="post" enctype="multipart/form-data">
-    <center>${paperBean.name}</center>
+    <center>${recordBean.name}</center>
     <br/>
-    <p>${paperBean.guide}</p>
+    <p>${recordBean.guide}</p>
     <br/>
 <fieldset>
     <legend>开始测评</legend>
     <ol id="questions">
-        <c:forEach items="${paperBean.questions}" var="question">
+        <c:forEach items="${recordBean.questionRecordList}" var="question">
             <li type="0">
                 <p>${question.name}</p>
-                <ol type="A" id="${question.index}">
+                <ol type="A">
                     <c:forEach items="${question.optionBeanList}" var="option">
                         <li>
-                            <input type="radio" name="${question.index}" value="${option.index}">${option.content}
+                            ${option.content}
+                                &nbsp;&nbsp;
+                            <c:if test="${option.index == question.selectedOption }">
+                                <img src="/resources/img/sign-check-icon.png" style="width: 16px;height: 16px"/>
+                                <font style="color:darkred">得分${question.mark}</font></c:if>
                         </li>
                     </c:forEach>
                 </ol>
@@ -29,10 +32,7 @@
     </ol>
 </fieldset>
 <br/>
-<hr/>
-    <center>
-        <input type="submit" value="提交测评" id="submit"/>
-    </center>
-</form>
+    <hr/>
+    <a href="/${recordBean.conclusionFilePath}">点击查看测评结果</a>
 </body>
 </html>

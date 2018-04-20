@@ -1,8 +1,14 @@
 package com.jlu.record.model;
 
-import io.swagger.models.auth.In;
+import com.jlu.common.utils.JsonUtils;
+import com.jlu.paper.bean.OptionBean;
+import com.jlu.record.bean.QuestionRecordBean;
+import org.codehaus.jackson.type.TypeReference;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/4/20.
@@ -11,17 +17,28 @@ import javax.persistence.*;
 public class QuestionRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long paperId;
-    private Long questionId;
-    private Long paperRecordId;
-    private String name;
-    private Integer orderNumber;
-    private Integer optionsNumber;
+    protected Long id;
+    protected Long paperId;
+    protected Long questionId;
+    protected Long paperRecordId;
+
+    protected Integer questionIndex;
+    protected String name;
+    protected Integer orderNumber;
+    protected Integer optionsNumber;
     @Lob
-    private String options;
-    private Integer selectedOption;
-    private Integer mark;
+    protected String options;
+
+    protected Integer selectedOption;
+    protected Integer mark;
+
+    public Integer getQuestionIndex() {
+        return questionIndex;
+    }
+
+    public void setQuestionIndex(Integer questionIndex) {
+        this.questionIndex = questionIndex;
+    }
 
     public Long getId() {
         return id;
@@ -101,5 +118,40 @@ public class QuestionRecord {
 
     public void setMark(Integer mark) {
         this.mark = mark;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("QuestionRecord{");
+        sb.append("id=").append(id);
+        sb.append(", paperId=").append(paperId);
+        sb.append(", questionId=").append(questionId);
+        sb.append(", paperRecordId=").append(paperRecordId);
+        sb.append(", questionIndex=").append(questionIndex);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", orderNumber=").append(orderNumber);
+        sb.append(", optionsNumber=").append(optionsNumber);
+        sb.append(", options='").append(options).append('\'');
+        sb.append(", selectedOption=").append(selectedOption);
+        sb.append(", mark=").append(mark);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    public QuestionRecordBean toBean(){
+        QuestionRecordBean questionRecordBean = new QuestionRecordBean();
+        BeanUtils.copyProperties(this,questionRecordBean);
+        questionRecordBean.setOptionBeanList(JsonUtils.getObjectByJsonString(options, new TypeReference<List<OptionBean>>() {
+            @Override
+            public Type getType() {
+                return super.getType();
+            }
+
+            @Override
+            public int compareTo(TypeReference<List<OptionBean>> o) {
+                return super.compareTo(o);
+            }
+        }));
+        return questionRecordBean;
     }
 }

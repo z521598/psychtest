@@ -42,12 +42,12 @@ public class UserLoginHelper {
 
     public static User getLoginUser(HttpServletRequest request) {
 
-//            HttpSession session = request.getSession();
-//            User = session.getAttribute(User.CURRENT_USER_NAME);
-//
-//        if (User instanceof com.jlu.user.model.User) {
-//            return (com.jlu.user.model.User) User;
-//        }
+            HttpSession session = request.getSession();
+            Object user= session.getAttribute(User.CURRENT_USER_NAME);
+
+        if (user instanceof com.jlu.user.model.User) {
+            return (com.jlu.user.model.User) user;
+        }
         return null;
     }
 

@@ -2,8 +2,8 @@ package com.jlu.paper.bean;
 
 import com.jlu.common.utils.JsonUtils;
 import com.jlu.paper.model.Question;
-import io.swagger.models.auth.In;
 
+import javax.persistence.Lob;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,8 +12,13 @@ import java.util.List;
  * Created by Administrator on 2018/4/19.
  */
 public class QuestionBean {
+    private Long id;
     private Integer index;
     private String name;
+    private Integer orderNumber;
+    private Integer optionsNumber;
+    @Lob
+    private String options;
     private List<OptionBean> optionBeanList = new LinkedList<>();
 
     public Integer getIndex() {
@@ -40,6 +45,38 @@ public class QuestionBean {
         this.optionBeanList = optionBeanList;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public Integer getOptionsNumber() {
+        return optionsNumber;
+    }
+
+    public void setOptionsNumber(Integer optionsNumber) {
+        this.optionsNumber = optionsNumber;
+    }
+
+    public String getOptions() {
+        return options;
+    }
+
+    public void setOptions(String options) {
+        this.options = options;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("QuestionBean{");
@@ -49,6 +86,7 @@ public class QuestionBean {
         sb.append('}');
         return sb.toString();
     }
+
 
     public Question toQuestion(Long paperId){
         Question question = new Question();
@@ -63,5 +101,14 @@ public class QuestionBean {
         });
         question.setOptions(JsonUtils.getJsonString(optionBeanList));
         return question;
+    }
+
+    public OptionBean getOptionByIndex(Integer selectedIndex) {
+        for(OptionBean optionBean : optionBeanList){
+            if(optionBean.getIndex().equals(selectedIndex)){
+                return optionBean;
+            }
+        }
+        return null;
     }
 }

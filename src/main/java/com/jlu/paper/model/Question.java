@@ -4,6 +4,7 @@ import com.jlu.common.utils.JsonUtils;
 import com.jlu.paper.bean.OptionBean;
 import com.jlu.paper.bean.QuestionBean;
 import org.codehaus.jackson.type.TypeReference;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.lang.reflect.Type;
@@ -99,7 +100,7 @@ public class Question {
 
     public QuestionBean toQuestionBean(){
         QuestionBean questionBean = new QuestionBean();
-        questionBean.setName(name);
+        BeanUtils.copyProperties(this,questionBean);
         questionBean.setIndex(orderNumber);
         questionBean.setOptionBeanList(JsonUtils.getObjectByJsonString(options, new TypeReference<List<OptionBean>>() {
             @Override

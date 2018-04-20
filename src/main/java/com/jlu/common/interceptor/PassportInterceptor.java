@@ -32,6 +32,8 @@ public class PassportInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+        // 获取当前用户
+        User user = UserLoginHelper.getLoginUser(request);
         // 是否开启鉴权
         if (Switch.OFF.toString().equals(PipelineConfigReader.getConfigValueByKey("authorization.switch"))) {
             return true;
@@ -45,21 +47,17 @@ public class PassportInterceptor implements HandlerInterceptor {
         if (permissionService.getWhiteUrlList().contains(uri)) {
             return true;
         }
-        // 获取当前用户
-        User User = null;
-        String pipelineToken = request.getHeader("pipeline-token");
 
-        User = UserLoginHelper.getLoginUser(request);
 
 
         // 检验是否登陆
-        if (User == null) {
+        if (uri == null) {
             response.sendRedirect("/login");
             return false;
         }
-        String username = User.getUsername();
+        String username = user.getUsername();
         // 管理员放行
-        if (Role.ADMIN.equals(User.getRole())) {
+        if (Role.ADMIN.equals(user.getRole())) {
             return true;
         }
         // 校验具体的资源权限

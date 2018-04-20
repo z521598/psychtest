@@ -10,14 +10,32 @@ import java.util.Date;
 public class PaperRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
-    private Long paperId;
+    protected Long paperId;
     @Lob
-    private String guide; //引导语
-    private String name;
-    private Date newTime;
-    private String conclusionFilePath;
+    protected String guide; //引导语
+    protected String name;
+    protected Date newTime;
+    protected String conclusionFilePath;
+    protected Integer userId;
+    protected String username;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Long getId() {
         return id;

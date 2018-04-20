@@ -8,7 +8,6 @@ import com.jlu.paper.dao.IQuestionDao;
 import com.jlu.paper.model.Paper;
 import com.jlu.paper.model.Question;
 import com.jlu.paper.service.IPaperService;
-import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
