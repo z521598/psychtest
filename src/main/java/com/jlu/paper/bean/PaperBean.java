@@ -4,6 +4,7 @@ import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.paper.model.Paper;
 import com.jlu.paper.model.Question;
 import com.jlu.record.model.PaperRecord;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +57,9 @@ public class PaperBean {
     }
 
     public void setConclusionFilePath(String conclusionFilePath) {
-        this.conclusionFilePath = conclusionFilePath;
+        if(StringUtils.isNotBlank(conclusionFilePath)){
+            this.conclusionFilePath = conclusionFilePath;
+        }
     }
 
 
@@ -70,8 +73,10 @@ public class PaperBean {
         sb.append('}');
         return sb.toString();
     }
-    public Paper toPaper(){
+
+    public Paper toPaper() {
         Paper paper = new Paper();
+        paper.setId(id);
         paper.setGuide(guide);
         paper.setName(name);
         paper.setDisable(false);
@@ -79,7 +84,8 @@ public class PaperBean {
         paper.setNewTime(new Date());
         return paper;
     }
-    public PaperRecord toPaperRecord(){
+
+    public PaperRecord toPaperRecord() {
         PaperRecord paperRecord = new PaperRecord();
         paperRecord.setGuide(guide);
         paperRecord.setName(name);
@@ -91,7 +97,16 @@ public class PaperBean {
         return paperRecord;
     }
 
-    public void addQuestion(QuestionBean questionBean){
+    public void addQuestion(QuestionBean questionBean) {
         questions.add(questionBean);
+    }
+
+    public String toText() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\t\t\t\t\t").append(name).append("\n\n").append(guide).append("\n");
+        for (QuestionBean questionBean : questions) {
+            sb.append("\n").append(questionBean.toText());
+        }
+        return sb.toString();
     }
 }

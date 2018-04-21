@@ -1,18 +1,22 @@
 package com.jlu.paper.web;
 
+import com.jlu.common.utils.ExportTextUtil;
+import com.jlu.common.utils.JsonUtils;
+import com.jlu.common.web.ResponseBean;
 import com.jlu.paper.bean.PaperBean;
+import com.jlu.paper.model.Paper;
 import com.jlu.paper.service.IPaperService;
+import com.jlu.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +27,7 @@ import java.util.Map;
 public class PaperController {
 
     @Autowired
-    IPaperService paperService;
+    private IPaperService paperService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String add(HttpServletRequest request, HttpServletResponse response, MultipartFile conclusionFilePath) throws IOException {
@@ -35,10 +39,24 @@ public class PaperController {
         return "/all";
     }
 
+    @RequestMapping(value = "/update/{paperId}/submit", method = RequestMethod.POST)
+    public String updateSubmit(@PathVariable Long paperId,HttpServletRequest request,HttpServletResponse response, MultipartFile conclusionFilePath) throws IOException {
+        String conclusionFilePathStr = paperService.uploadFile(request, conclusionFilePath);
+        PaperBean paperBean = paperService.dealPaperInfo(request.getParameterMap());
+        paperBean.setConclusionFilePath(conclusionFilePathStr);
+        paperBean.setId(paperId);
+        paperService.update(paperBean);
+        return "all";
+    }
+
+
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ModelAndView all() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("paper/all");
+        List<Paper> paperList = paperService.getAll();
+        modelAndView.addObject("papers", paperList);
+        modelAndView.setViewName("paper/papers");
+        System.out.println(paperList);
         return modelAndView;
     }
 
@@ -47,10 +65,40 @@ public class PaperController {
         ModelAndView modelAndView = new ModelAndView();
         PaperBean paperBean = paperService.getPaperBean(paperId);
         modelAndView.setViewName("paper/one");
-        modelAndView.addObject("paperBean",paperBean);
+        modelAndView.addObject("paperBean", paperBean);
         System.out.println(paperBean);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/update/{paperId}", method = RequestMethod.GET)
+    public ModelAndView update(@PathVariable Long paperId) {
+        ModelAndView modelAndView = new ModelAndView();
+        PaperBean paperBean = paperService.getPaperBean(paperId);
+        modelAndView.setViewName("paper/update");
+        modelAndView.addObject("paperBean", paperBean);
+        System.out.println(paperBean);
+        return modelAndView;
+    }
+
+
+
+
+    @RequestMapping(value = "/disable", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseBean disable(Long paperId, @RequestParam(defaultValue = "true") Boolean disable) {
+        Paper paper = paperService.get(paperId);
+        paper.setDisable(disable);
+        paperService.save(paper);
+        return ResponseBean.TRUE;
+    }
+
+    @RequestMapping(value = "/{paperId}/file", method = RequestMethod.GET)
+    public void file(@PathVariable Long paperId, HttpServletRequest request, HttpServletResponse response) {
+        PaperBean paperBean = paperService.getPaperBean(paperId);
+        ExportTextUtil.writeToTxt(response, paperBean.toText(), paperBean.getName());
+    }
+
+
 
 
 }

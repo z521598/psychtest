@@ -8,6 +8,7 @@ import com.jlu.paper.dao.IQuestionDao;
 import com.jlu.paper.model.Paper;
 import com.jlu.paper.model.Question;
 import com.jlu.paper.service.IPaperService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,26 +86,26 @@ public class PaperServiceImpl implements IPaperService {
                     // 不匹配
                     continue;
                 case 1:
-                    QuestionBean questionBean = getQuestionByIndex(questionList,questionIndex);
+                    QuestionBean questionBean = getQuestionByIndex(questionList, questionIndex);
                     questionBean.setName(value);
                     break;
                 case 2:
-                    QuestionBean questionBean2 = getQuestionByIndex(questionList,questionIndex);
-                    OptionBean optionBean = getOptionByIndex(questionBean2.getOptionBeanList(),optionIndex);
-                        if (optionMarkPattern.matcher(key).find()) {
-                            optionBean.setMark(Integer.parseInt(value));
-                        } else if (optionContentPattern.matcher(key).find()) {
-                            optionBean.setContent(value);
-                        }
+                    QuestionBean questionBean2 = getQuestionByIndex(questionList, questionIndex);
+                    OptionBean optionBean = getOptionByIndex(questionBean2.getOptionBeanList(), optionIndex);
+                    if (optionMarkPattern.matcher(key).find()) {
+                        optionBean.setMark(Integer.parseInt(value));
+                    } else if (optionContentPattern.matcher(key).find()) {
+                        optionBean.setContent(value);
+                    }
                     break;
             }
         }
         return paperBean;
     }
 
-    private QuestionBean getQuestionByIndex(List<QuestionBean> questionBeanList,Integer index){
+    private QuestionBean getQuestionByIndex(List<QuestionBean> questionBeanList, Integer index) {
         for (QuestionBean q : questionBeanList) {
-            if(q.getIndex().equals(index)){
+            if (q.getIndex().equals(index)) {
                 return q;
             }
         }
@@ -114,9 +115,9 @@ public class PaperServiceImpl implements IPaperService {
         return q;
     }
 
-    private OptionBean getOptionByIndex(List<OptionBean> optionBeanList,Integer index){
+    private OptionBean getOptionByIndex(List<OptionBean> optionBeanList, Integer index) {
         for (OptionBean o : optionBeanList) {
-            if(o.getIndex().equals(index)){
+            if (o.getIndex().equals(index)) {
                 return o;
             }
         }
@@ -127,26 +128,45 @@ public class PaperServiceImpl implements IPaperService {
     }
 
 
-
     @Override
     public void savePaper(PaperBean paperBean) {
         System.out.println(paperBean);
         Paper paper = paperBean.toPaper();
         paperDao.saveOrUpdate(paper);
         Long paperId = paper.getId();
-        List<QuestionBean> questionBean = paperBean.getQuestions();
+        insertQuestion(paperBean.getQuestions(),paperId);
+    }
+
+    @Override
+    public void update(PaperBean paperBean) {
+        Long paperId = paperBean.getId();
+        // 更新问卷信息
+        Paper paper = paperBean.toPaper();
+        Paper paperOld = paperDao.findById(paperId);
+        if(StringUtils.isBlank(paper.getConclusionFilePath())){
+            paper.setConclusionFilePath(paperOld.getConclusionFilePath());
+        }
+        paperOld.setName(paper.getName());
+        paperOld.setGuide(paper.getGuide());
+        paperDao.saveOrUpdate(paperOld);
+        // 删掉问卷下所有问题
+        deleteQuestion(paperId);
+        // 插入所有问题
+        insertQuestion(paperBean.getQuestions(),paperId);
+    }
+
+    private void insertQuestion(List<QuestionBean> questionBean,Long paperId){
         questionBean.sort(new Comparator<QuestionBean>() {
             @Override
             public int compare(QuestionBean o1, QuestionBean o2) {
                 return o1.getIndex() - o2.getIndex();
             }
         });
-        for (int i = 0 ; i < questionBean.size() ; i++) {
+        for (int i = 0; i < questionBean.size(); i++) {
             Question question = questionBean.get(i).toQuestion(paperId);
             question.setOrderNumber(i);
             questionDao.saveOrUpdate(question);
         }
-
     }
 
     @Override
@@ -157,11 +177,14 @@ public class PaperServiceImpl implements IPaperService {
         if (!floder.exists()) {
             floder.mkdir();
         }
-        if (conclusionFilePath == null) {
+        if(conclusionFilePath == null){
             return null;
         }
         // 原始文件名
         String originalFilename = conclusionFilePath.getOriginalFilename();
+        if(StringUtils.isBlank(originalFilename)){
+            return null;
+        }
         // 新文件名
         String fileName = UUID.randomUUID()
                 + originalFilename.substring(originalFilename
@@ -176,11 +199,40 @@ public class PaperServiceImpl implements IPaperService {
     public PaperBean getPaperBean(Long paperId) {
         PaperBean paperBean = new PaperBean();
         Paper paper = paperDao.findById(paperId);
-        BeanUtils.copyProperties(paper,paperBean);
+        BeanUtils.copyProperties(paper, paperBean);
         List<Question> questions = questionDao.find(paperId);
-        for(int i =0 ;i<questions.size() ;i++){
+        for (int i = 0; i < questions.size(); i++) {
             paperBean.addQuestion(questions.get(i).toQuestionBean());
         }
         return paperBean;
+    }
+
+    @Override
+    public List<Paper> getAll() {
+        return paperDao.findByProperties(null);
+    }
+
+    @Override
+    public Paper get(Long paperId) {
+        return paperDao.findById(paperId);
+    }
+
+    @Override
+    public void save(Paper paper) {
+        paperDao.saveOrUpdate(paper);
+    }
+
+    @Override
+    public void delete(Long paperId) {
+        Paper paper = paperDao.findById(paperId);
+        paperDao.delete(paper);
+    }
+
+    @Override
+    public void deleteQuestion(Long paperId) {
+        List<Question> questions =questionDao.find(paperId);
+        for(int i = 0 ; questions!=null&i<questions.size();i++){
+            questionDao.delete(questions.get(i));
+        }
     }
 }
