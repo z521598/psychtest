@@ -95,4 +95,16 @@ public class RecordServiceImpl implements IRecordService {
             paperRecordDao.delete(paperRecord);
         }
     }
+
+    @Override
+    public void deleteByPaperId(Long paperId) {
+        List<PaperRecord> paperRecords = paperRecordDao.find(paperId);
+        for(int i = 0 ; paperRecords!=null&&i<paperRecords.size();i++){
+            paperRecordDao.delete(paperRecords.get(i));
+        }
+        List<QuestionRecord> questionRecordList = questionRecordDao.findByPaperId(paperId);
+        for(int i = 0 ; questionRecordList!=null&&i<questionRecordList.size();i++){
+            questionRecordDao.delete(questionRecordList.get(i));
+        }
+    }
 }

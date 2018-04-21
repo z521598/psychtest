@@ -1,5 +1,6 @@
 package com.jlu.record.web;
 
+import com.jlu.common.utils.ExportTextUtil;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.paper.bean.PaperBean;
 import com.jlu.paper.service.IPaperService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -46,12 +48,19 @@ public class RecordController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/{recordId}/file", method = RequestMethod.GET)
+    public void file(@PathVariable Long recordId, HttpServletRequest request, HttpServletResponse response) {
+        RecordBean recordBean = recordService.get(recordId);
+        ExportTextUtil.writeToTxt(response, recordBean.toText(), recordBean.getName()+"-"+recordBean.getNewTime());
+    }
+
     @RequestMapping(value = "/{recordId}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseBean deleteOne(@PathVariable Long recordId) {
         recordService.delete(recordId);
         return ResponseBean.TRUE;
     }
+
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ModelAndView queryAll() {

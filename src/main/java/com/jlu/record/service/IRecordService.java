@@ -19,4 +19,6 @@ public interface IRecordService {
     List<PaperRecord> get(String username);
 
     void delete(Long recordId);
+
+    void deleteByPaperId(Long paperId);
 }

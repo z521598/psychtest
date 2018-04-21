@@ -1,5 +1,6 @@
 package com.jlu.user.web;
 
+import com.jlu.common.permission.annotations.PermissionAdmin;
 import com.jlu.common.web.AbstractController;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.user.model.Role;
@@ -50,6 +51,7 @@ public class UserController extends AbstractController {
         }
     }
 
+    @PermissionAdmin
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public ModelAndView all(@PathVariable String username) {
         ModelAndView modelAndView = new ModelAndView();
@@ -78,6 +80,19 @@ public class UserController extends AbstractController {
         userService.saveOrUpdateUser(user);
         return ResponseBean.TRUE;
     }
+
+
+
+    @RequestMapping(value = "/admin/updatePwd",method = RequestMethod.POST)
+    public ModelAndView updatePwd(Integer userId,String password) {
+        ModelAndView mav = new ModelAndView();
+        User user = userService.getUserById(userId);
+        user.setPassword(password);
+        userService.saveOrUpdateUser(user);
+        mav.setViewName("../adminNav/updatePassword.jsp");
+        return mav;
+    }
+
 
 
 }

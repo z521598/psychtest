@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	if(!(newp == renewp)){
     		$("#msg").html("<label style = 'color : red ;size : 20px'>两次密码不一致</label>");
     		return false;
-    	}else if(oldp != "${activeSeller.upassword}"){
+    	}else if(oldp != "${currentUser.password}"){
     		$("#msg").html("<label style = 'color : red ;size : 20px'>密码错误</label>");
     		return false
     	}else{
@@ -40,12 +40,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   <body style = "background : #00BB99">
 	<div class="main">
-		<div class="clear">${msg}</div>
-		<form action="users/updateAminByUid.action" method="post">
+		<div class="clear" id="msg">${msg}</div>
+		<form action="user/admin/updatePwd" method="post" onSubmit="return test()">
 		    <div class="clear"> </div>
 		    <div class="lable-2">
-   				<input type = "hidden" name = "uid" value = "${admin.uid}"/>
-		   		<input type="password" name = "upassword" id = "newp" placeholder = "新密码" />
+   				<input type = "hidden" name = "userId" value = "${currentUser.id}"/>
+		   		<input type="password" name = "password" id = "newp" placeholder = "新密码" />
 		    	<input type="password" id = "renewp" placeholder = "确认新密码" />
 		    	<input type="password" id = "oldp" placeholder = "旧密码"/>
 			</div>

@@ -1,3 +1,5 @@
+<%@ page import="com.jlu.user.model.Role" %>
+<%@ page import="com.jlu.user.model.User" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -20,6 +22,13 @@
                 window.location.reload();
             });
         }
+        function del(paperId) {
+            console.log(paperId);
+            $.get("/paper/delete/" + paperId, function (sign) {
+                window.location.reload();
+            });
+        }
+
     </script>
 </head>
 <body>
@@ -47,14 +56,19 @@
                     </a>
                 </c:if>
                 <a href="update/${everyPaper.id}">修改</a>
-                <a href="delete/${everyPaper.id}" onclick="">删除</a>
+                <a href="javascript:void(0)" onClick="del(${everyPaper.id})">删除</a>
+                <a href="${everyPaper.id}" target="_blank">查看</a>
                 <a href="${everyPaper.id}/file" target="_blank">导出问卷</a>
             </td>
         </tr>
     </c:forEach>
 </table>
 <br/>
+<%
+    if(((User)session.getAttribute("currentUser")).getRole().equals(Role.ADMIN)){
+%>
 &nbsp;&nbsp;&nbsp;&nbsp;
 <input type="button" onClick="location.href='/paper/add.jsp'" value="添加问卷"/>
+<%}%>
 </body>
 </html>

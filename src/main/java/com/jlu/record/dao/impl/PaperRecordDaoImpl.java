@@ -21,4 +21,12 @@ public class PaperRecordDaoImpl extends AbstractBaseDao<PaperRecord> implements 
         List<PaperRecord> paperRecords = findByProperties(conditionAndSet);
         return paperRecords == null ? new ArrayList<>() : paperRecords;
     }
+
+    @Override
+    public  List<PaperRecord>  find(Long paperId) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("paperId", paperId);
+        List<PaperRecord> paperRecords = findByProperties(conditionAndSet);
+        return paperRecords == null ? new ArrayList<>() : paperRecords;
+    }
 }

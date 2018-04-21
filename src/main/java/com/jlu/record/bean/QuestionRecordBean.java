@@ -28,4 +28,18 @@ public class QuestionRecordBean extends QuestionRecord{
         sb.append('}');
         return sb.toString();
     }
+
+    public String toText() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name).append("\n");
+        for (OptionBean optionBean : optionBeanList) {
+            sb.append("\t").append(optionBean.toText());
+            if(optionBean.getIndex().equals(selectedOption)){
+                sb.append("(您选择了此项，等分").append(mark).append("分)");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }
+

@@ -51,7 +51,7 @@
                                 </a>
                             </c:if>
                             <a href="/user/${everyUser.username}" target="oneUser">修改</a>
-                            <a href="store/findSellerBySid.action?sid" target="showOneSeller">查看测评记录</a>
+                            <a href="/record/query?username=${everyUser.username}">查看测评记录</a>
                         </td>
                     </tr>
                 </c:forEach>

@@ -6,6 +6,8 @@ import com.jlu.common.web.ResponseBean;
 import com.jlu.paper.bean.PaperBean;
 import com.jlu.paper.model.Paper;
 import com.jlu.paper.service.IPaperService;
+import com.jlu.record.dao.IPaperRecordDao;
+import com.jlu.record.service.IRecordService;
 import com.jlu.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,9 @@ public class PaperController {
     @Autowired
     private IPaperService paperService;
 
+    @Autowired
+    private IRecordService recordService;
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String add(HttpServletRequest request, HttpServletResponse response, MultipartFile conclusionFilePath) throws IOException {
         Map<String, String[]> parameterMap = request.getParameterMap();
@@ -36,7 +41,7 @@ public class PaperController {
         PaperBean paperBean = paperService.dealPaperInfo(parameterMap);
         paperBean.setConclusionFilePath(conclusionFilePathStr);
         paperService.savePaper(paperBean);
-        return "/all";
+        return "all";
     }
 
     @RequestMapping(value = "/update/{paperId}/submit", method = RequestMethod.POST)
@@ -56,6 +61,15 @@ public class PaperController {
         List<Paper> paperList = paperService.getAll();
         modelAndView.addObject("papers", paperList);
         modelAndView.setViewName("paper/papers");
+        System.out.println(paperList);
+        return modelAndView;
+    }
+    @RequestMapping(value = "/query/allForUser", method = RequestMethod.GET)
+    public ModelAndView allForUser() {
+        ModelAndView modelAndView = new ModelAndView();
+        List<Paper> paperList = paperService.getAll();
+        modelAndView.addObject("papers", paperList);
+        modelAndView.setViewName("paper/papersForUser");
         System.out.println(paperList);
         return modelAndView;
     }
@@ -80,6 +94,14 @@ public class PaperController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/delete/{paperId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseBean letele(@PathVariable Long paperId) {
+        paperService.delete(paperId);
+        paperService.deleteQuestion(paperId);
+        recordService.deleteByPaperId(paperId);
+        return ResponseBean.TRUE;
+    }
 
 
 

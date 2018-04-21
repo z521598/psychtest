@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface IPaperRecordDao extends IBaseDao<PaperRecord>{
     List<PaperRecord> find(String username);
+
+    List<PaperRecord>  find(Long paperId);
 }

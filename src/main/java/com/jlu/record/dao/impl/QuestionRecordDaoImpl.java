@@ -20,4 +20,11 @@ public class QuestionRecordDaoImpl extends AbstractBaseDao<QuestionRecord> imple
         conditionAndSet.put("paperRecordId",recordId);
         return findByProperties(conditionAndSet,new AscOrder("orderNumber"));
     }
+
+    @Override
+    public List<QuestionRecord> findByPaperId(Long paperId) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("paperId",paperId);
+        return findByProperties(conditionAndSet);
+    }
 }

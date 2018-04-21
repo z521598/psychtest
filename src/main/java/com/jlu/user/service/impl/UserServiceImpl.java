@@ -61,4 +61,9 @@ public class UserServiceImpl implements IUserService {
         conditionAndSet.put("role", Role.USER);
         return userDao.findByProperties(conditionAndSet);
     }
+
+    @Override
+    public User getUserById(Integer userId) {
+        return userDao.findById(userId);
+    }
 }

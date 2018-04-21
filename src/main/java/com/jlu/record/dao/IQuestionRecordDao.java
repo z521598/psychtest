@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface IQuestionRecordDao extends IBaseDao<QuestionRecord>{
     List<QuestionRecord> find(Long recordId);
+
+    List<QuestionRecord> findByPaperId(Long paperId);
 }

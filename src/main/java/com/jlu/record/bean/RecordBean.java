@@ -1,5 +1,6 @@
 package com.jlu.record.bean;
 
+import com.jlu.paper.bean.QuestionBean;
 import com.jlu.record.model.PaperRecord;
 import com.jlu.record.model.QuestionRecord;
 
@@ -31,4 +32,13 @@ public class RecordBean extends PaperRecord{
         sb.append('}');
         return sb.toString();
     }
-}
+
+        public String toText() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("\t\t\t\t\t").append(name).append("\n\n").append(guide).append("\n");
+            for (QuestionRecordBean q : questionRecordList) {
+                sb.append("\n").append(q.toText());
+            }
+            return sb.toString();
+        }
+    }

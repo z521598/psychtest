@@ -71,9 +71,9 @@
             return test($("#firstaddress").val().trim() != "", "#flab");
         }
         function AJAXTestUsername() {
-            $.post("user/registtest.action", {username: $("#username").val()}, function (data) {
-                        return test($("#username").val().trim().length >= 5 && data, "#ilab");
-                    }
+            $.get("user/query?username="+$("#username").val(), function (data) {
+                        return test($("#username").val().trim().length >= 5 && !data, "#ilab");
+            }
             );
         }
         function testAll() {

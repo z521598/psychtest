@@ -24,4 +24,6 @@ public interface IUserService {
     User getUserByName(String username);
 
     List<User> findAll();
+
+    User getUserById(Integer userId);
 }

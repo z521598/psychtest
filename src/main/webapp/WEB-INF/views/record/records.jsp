@@ -1,3 +1,5 @@
+<%@ page import="com.jlu.user.model.User" %>
+<%@ page import="com.jlu.user.model.Role" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -20,12 +22,16 @@
     </script>
 </head>
 <body>
-<form action="/record/query">
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <input type="text" name="username"/>&nbsp;&nbsp;
-    <input type="submit" value="按照用户名称查询"/>
-</form>
-<hr/>
+<%
+if(((User)session.getAttribute("currentUser")).getRole().equals(Role.ADMIN)){
+%>
+    <form action="/record/query">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" name="username"/>&nbsp;&nbsp;
+        <input type="submit" value="按照用户名称查询"/>
+    </form>
+    <hr/>
+<%}%>
 <table class="solidTable">
     <tr>
         <td>问卷名称</td>
@@ -39,8 +45,13 @@
             <td>${everyRecord.username}</td>
             <td>${everyRecord.newTime}</td>
             <td align="center">
+                <%
+                    if(((User)session.getAttribute("currentUser")).getRole().equals(Role.ADMIN)){
+                %>
                 <a href="javascript:void(0)" onclick="del(${everyRecord.id})">删除</a>
-                <a href="store/findSellerBySid.action?sid">导出记录</a>
+                <%}%>
+
+                <a href="${everyRecord.id}/file">导出记录</a>
             </td>
         </tr>
     </c:forEach>

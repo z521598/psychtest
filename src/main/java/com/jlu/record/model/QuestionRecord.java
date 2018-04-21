@@ -19,6 +19,7 @@ public class QuestionRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     protected Long paperId;
+    @Deprecated
     protected Long questionId;
     protected Long paperRecordId;
 
