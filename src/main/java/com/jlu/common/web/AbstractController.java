@@ -11,13 +11,6 @@ import java.util.List;
  * Created by langshiquan on 18/1/10.
  */
 public abstract class AbstractController {
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        dateFormat.setLenient(false);
-//        binder.registerCustomEditor(Date.class, new CustomDateEditor(
-//                dateFormat, false));
-//    }
 
     protected String getLoginUserName() {
         return UserLoginHelper.getLoginUserName();

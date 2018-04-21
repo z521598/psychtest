@@ -1,6 +1,7 @@
 package com.jlu.user.web;
 
 import com.jlu.common.permission.annotations.PermissionAdmin;
+import com.jlu.common.permission.annotations.PermissionPass;
 import com.jlu.common.web.AbstractController;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.user.model.Role;
@@ -24,6 +25,7 @@ public class UserController extends AbstractController {
     @Autowired
     IUserService userService;
 
+    @PermissionPass
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String login(User user) {
         user.setRole(Role.USER);
@@ -40,6 +42,7 @@ public class UserController extends AbstractController {
         return "";
     }
 
+    @PermissionPass
     @RequestMapping(value = "/query", method = RequestMethod.GET)
     @ResponseBody
     public Boolean query(String username) {
@@ -51,7 +54,6 @@ public class UserController extends AbstractController {
         }
     }
 
-    @PermissionAdmin
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public ModelAndView all(@PathVariable String username) {
         ModelAndView modelAndView = new ModelAndView();
@@ -63,6 +65,7 @@ public class UserController extends AbstractController {
     }
 
 
+    @PermissionAdmin
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ModelAndView all() {
         ModelAndView modelAndView = new ModelAndView();
@@ -72,6 +75,7 @@ public class UserController extends AbstractController {
         return modelAndView;
     }
 
+    @PermissionAdmin
     @RequestMapping(value = "/disable", method = RequestMethod.GET)
     @ResponseBody
     public ResponseBean disable(String username, @RequestParam(defaultValue = "true") Boolean disable) {
@@ -81,8 +85,7 @@ public class UserController extends AbstractController {
         return ResponseBean.TRUE;
     }
 
-
-
+    @PermissionAdmin
     @RequestMapping(value = "/admin/updatePwd",method = RequestMethod.POST)
     public ModelAndView updatePwd(Integer userId,String password) {
         ModelAndView mav = new ModelAndView();

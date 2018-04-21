@@ -1,5 +1,6 @@
 package com.jlu.record.web;
 
+import com.jlu.common.permission.annotations.PermissionAdmin;
 import com.jlu.common.utils.ExportTextUtil;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.paper.bean.PaperBean;
@@ -54,6 +55,7 @@ public class RecordController {
         ExportTextUtil.writeToTxt(response, recordBean.toText(), recordBean.getName()+"-"+recordBean.getNewTime());
     }
 
+    @PermissionAdmin
     @RequestMapping(value = "/{recordId}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseBean deleteOne(@PathVariable Long recordId) {
@@ -62,6 +64,7 @@ public class RecordController {
     }
 
 
+    @PermissionAdmin
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ModelAndView queryAll() {
         ModelAndView modelAndView = new ModelAndView();

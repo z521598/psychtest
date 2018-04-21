@@ -20,7 +20,12 @@
 		<label class="logo-title">心理测评系统管理中心</label>
 		<ul class="inline">
 			<li>&nbsp;&nbsp;欢迎您,尊贵的管理员</li>
+			<li>
+				<img src="/resources/img/sellMain_images/32/200.png" />&nbsp;&nbsp;
+				<a class="loginout" href="/exit">退出</a>
+			</li>
 		</ul>
+
 	</div>
 
 	<div class="nav">

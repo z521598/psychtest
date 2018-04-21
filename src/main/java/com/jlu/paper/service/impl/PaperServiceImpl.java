@@ -1,5 +1,7 @@
 package com.jlu.paper.service.impl;
 
+import com.jlu.common.exception.PsychtestRuntimeException;
+import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.paper.bean.OptionBean;
 import com.jlu.paper.bean.PaperBean;
 import com.jlu.paper.bean.QuestionBean;
@@ -8,6 +10,7 @@ import com.jlu.paper.dao.IQuestionDao;
 import com.jlu.paper.model.Paper;
 import com.jlu.paper.model.Question;
 import com.jlu.paper.service.IPaperService;
+import com.jlu.user.model.Role;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,7 +137,7 @@ public class PaperServiceImpl implements IPaperService {
         Paper paper = paperBean.toPaper();
         paperDao.saveOrUpdate(paper);
         Long paperId = paper.getId();
-        insertQuestion(paperBean.getQuestions(),paperId);
+        insertQuestion(paperBean.getQuestions(), paperId);
     }
 
     @Override
@@ -143,7 +146,7 @@ public class PaperServiceImpl implements IPaperService {
         // 更新问卷信息
         Paper paper = paperBean.toPaper();
         Paper paperOld = paperDao.findById(paperId);
-        if(StringUtils.isBlank(paper.getConclusionFilePath())){
+        if (StringUtils.isBlank(paper.getConclusionFilePath())) {
             paper.setConclusionFilePath(paperOld.getConclusionFilePath());
         }
         paperOld.setName(paper.getName());
@@ -152,10 +155,10 @@ public class PaperServiceImpl implements IPaperService {
         // 删掉问卷下所有问题
         deleteQuestion(paperId);
         // 插入所有问题
-        insertQuestion(paperBean.getQuestions(),paperId);
+        insertQuestion(paperBean.getQuestions(), paperId);
     }
 
-    private void insertQuestion(List<QuestionBean> questionBean,Long paperId){
+    private void insertQuestion(List<QuestionBean> questionBean, Long paperId) {
         questionBean.sort(new Comparator<QuestionBean>() {
             @Override
             public int compare(QuestionBean o1, QuestionBean o2) {
@@ -177,12 +180,12 @@ public class PaperServiceImpl implements IPaperService {
         if (!floder.exists()) {
             floder.mkdir();
         }
-        if(conclusionFilePath == null){
+        if (conclusionFilePath == null) {
             return null;
         }
         // 原始文件名
         String originalFilename = conclusionFilePath.getOriginalFilename();
-        if(StringUtils.isBlank(originalFilename)){
+        if (StringUtils.isBlank(originalFilename)) {
             return null;
         }
         // 新文件名
@@ -199,6 +202,9 @@ public class PaperServiceImpl implements IPaperService {
     public PaperBean getPaperBean(Long paperId) {
         PaperBean paperBean = new PaperBean();
         Paper paper = paperDao.findById(paperId);
+        if (paper.getDisable() && Role.USER.equals(UserLoginHelper.getLoginUser().getRole())) {
+            throw new PsychtestRuntimeException("问卷已禁用");
+        }
         BeanUtils.copyProperties(paper, paperBean);
         List<Question> questions = questionDao.find(paperId);
         for (int i = 0; i < questions.size(); i++) {
@@ -230,8 +236,8 @@ public class PaperServiceImpl implements IPaperService {
 
     @Override
     public void deleteQuestion(Long paperId) {
-        List<Question> questions =questionDao.find(paperId);
-        for(int i = 0 ; questions!=null&i<questions.size();i++){
+        List<Question> questions = questionDao.find(paperId);
+        for (int i = 0; questions != null & i < questions.size(); i++) {
             questionDao.delete(questions.get(i));
         }
     }

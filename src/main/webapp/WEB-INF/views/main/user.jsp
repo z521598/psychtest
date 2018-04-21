@@ -26,7 +26,7 @@
 			<li>&nbsp;&nbsp;欢迎您,${currentUser.name}</li>
 			<li>
 				<img src="/resources/img/sellMain_images/32/200.png" />&nbsp;&nbsp;
-				<a class="loginout" href="../login.jsp">退出</a>
+				<a class="loginout" href="/exit">退出</a>
 			</li>
 		</ul>
 	</div>

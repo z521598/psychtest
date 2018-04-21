@@ -99,12 +99,21 @@ public class RecordServiceImpl implements IRecordService {
     @Override
     public void deleteByPaperId(Long paperId) {
         List<PaperRecord> paperRecords = paperRecordDao.find(paperId);
-        for(int i = 0 ; paperRecords!=null&&i<paperRecords.size();i++){
+        for (int i = 0; paperRecords != null && i < paperRecords.size(); i++) {
             paperRecordDao.delete(paperRecords.get(i));
         }
         List<QuestionRecord> questionRecordList = questionRecordDao.findByPaperId(paperId);
-        for(int i = 0 ; questionRecordList!=null&&i<questionRecordList.size();i++){
+        for (int i = 0; questionRecordList != null && i < questionRecordList.size(); i++) {
             questionRecordDao.delete(questionRecordList.get(i));
         }
+    }
+
+    @Override
+    public Boolean checkPermission(Long id, String username) {
+        PaperRecord paperRecord = paperRecordDao.findById(id);
+        if (paperRecord == null) {
+            return false;
+        }
+        return paperRecord.getUsername().equals(username);
     }
 }

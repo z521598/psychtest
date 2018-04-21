@@ -9,10 +9,12 @@ import com.jlu.common.swagger2.Swagger2Config;
 import com.jlu.common.utils.CollUtils;
 import com.jlu.common.utils.PackageScanUtils;
 import com.jlu.common.utils.PipelineConfigReader;
+import com.jlu.record.service.IRecordService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,42 +40,22 @@ public class PermissionServiceImpl implements IPermissionService {
     private Set<String> whiteUrlList = new HashSet<>();
     private Set<String> adminUrlList = new HashSet<>();
 
+    @Autowired
+    private IRecordService recordService;
 
-    /**
-     * @param paramType
-     * @param paramValue
-     * @return 模块名字
-     */
     @Override
-    public Boolean checkPermissionByParamType(String paramType, String paramValue, String owner) {
-        // 暂时还没有不是资源的id走到这里
+    public Boolean checkPermissionByParamType(String paramType, String paramValue, String username) {
         if (!NumberUtils.isNumber(paramValue)) {
             return false;
         }
         Long id = Long.parseLong(paramValue);
-        if (id == 0L) {
-            return true;
-        }
         switch (paramType) {
-
+            case "recordId":
+                return recordService.checkPermission(id,username);
             default:
                 break;
         }
         return true;
-    }
-
-    public Boolean checkUsernameByModule(String module, String username) {
-        if (StringUtils.isBlank(module)) {
-            return false;
-        }
-        String[] element = module.split("/");
-        if (element.length != 2) {
-            return false;
-        }
-        if (username.equals(element[0])) {
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -98,13 +80,14 @@ public class PermissionServiceImpl implements IPermissionService {
                 || request.getRequestURL().indexOf("error/") > 0
                 || request.getRequestURL().indexOf("resource/") > 0
                 || request.getRequestURL().indexOf("favicon.ico") > 0
-                || request.getRequestURL().indexOf("webjars") > 0;
+                || request.getRequestURL().indexOf("webjars") > 0
+                || request.getRequestURL().indexOf("jsp") > 0;
 
     }
 
     @Override
     public Boolean checkSourcePermission(Map<String, String> resourceParam, String username) {
-        String owner = resourceParam.get("owner");
+        String owner = resourceParam.get("username");
         if (owner != null) {
             if (owner.equals(username)) {
                 return true;

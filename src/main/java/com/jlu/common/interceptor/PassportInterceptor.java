@@ -48,10 +48,8 @@ public class PassportInterceptor implements HandlerInterceptor {
             return true;
         }
 
-
-
         // 检验是否登陆
-        if (uri == null) {
+        if (user == null) {
             response.sendRedirect("/login");
             return false;
         }

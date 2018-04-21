@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,9 +25,11 @@ public class ExceptionControllerAdvice {
     // 403
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ResponseBody
-    public ResponseBean forbiddenExceptionHandler(ForbiddenException fbex) {
-        return ResponseBean.fail(fbex.getMessage());
+    public ModelAndView forbiddenExceptionHandler(ForbiddenException fbex) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("403");
+        modelAndView.addObject("msg", fbex.getMessage());
+        return modelAndView;
     }
 
     // 400
@@ -37,19 +40,25 @@ public class ExceptionControllerAdvice {
         return ResponseBean.fail("请求参数格式有误");
     }
 
+    // 400
     @ExceptionHandler(PsychtestRuntimeException.class)
     @ResponseBody
-    public ResponseBean pipelineRuntimeExceptionHandler(PsychtestRuntimeException pre) {
-        return ResponseBean.fail(pre.getMessage());
+    public ModelAndView pipelineRuntimeExceptionHandler(PsychtestRuntimeException pre) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("400");
+        modelAndView.addObject("msg", pre.getMessage());
+        return modelAndView;
     }
 
     // 500
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    public ResponseBean exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception e) {
+    public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception e) {
         AccessLogHelper.logAccessErrorOut(request, response, e);
-        return ResponseBean.fail(e.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("500");
+        modelAndView.addObject("msg", e.getMessage());
+        return modelAndView;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.jlu.paper.web;
 
+import com.jlu.common.permission.annotations.PermissionAdmin;
 import com.jlu.common.utils.ExportTextUtil;
 import com.jlu.common.utils.JsonUtils;
 import com.jlu.common.web.ResponseBean;
@@ -34,6 +35,7 @@ public class PaperController {
     @Autowired
     private IRecordService recordService;
 
+    @PermissionAdmin
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String add(HttpServletRequest request, HttpServletResponse response, MultipartFile conclusionFilePath) throws IOException {
         Map<String, String[]> parameterMap = request.getParameterMap();
@@ -41,20 +43,21 @@ public class PaperController {
         PaperBean paperBean = paperService.dealPaperInfo(parameterMap);
         paperBean.setConclusionFilePath(conclusionFilePathStr);
         paperService.savePaper(paperBean);
-        return "all";
+        return "redirect:/paper/all";
     }
 
+    @PermissionAdmin
     @RequestMapping(value = "/update/{paperId}/submit", method = RequestMethod.POST)
-    public String updateSubmit(@PathVariable Long paperId,HttpServletRequest request,HttpServletResponse response, MultipartFile conclusionFilePath) throws IOException {
+    public String updateSubmit(@PathVariable Long paperId, HttpServletRequest request, HttpServletResponse response, MultipartFile conclusionFilePath) throws IOException {
         String conclusionFilePathStr = paperService.uploadFile(request, conclusionFilePath);
         PaperBean paperBean = paperService.dealPaperInfo(request.getParameterMap());
         paperBean.setConclusionFilePath(conclusionFilePathStr);
         paperBean.setId(paperId);
         paperService.update(paperBean);
-        return "all";
+        return "redirect:/paper/all";
     }
 
-
+    @PermissionAdmin
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ModelAndView all() {
         ModelAndView modelAndView = new ModelAndView();
@@ -64,6 +67,7 @@ public class PaperController {
         System.out.println(paperList);
         return modelAndView;
     }
+
     @RequestMapping(value = "/query/allForUser", method = RequestMethod.GET)
     public ModelAndView allForUser() {
         ModelAndView modelAndView = new ModelAndView();
@@ -94,6 +98,7 @@ public class PaperController {
         return modelAndView;
     }
 
+    @PermissionAdmin
     @RequestMapping(value = "/delete/{paperId}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseBean letele(@PathVariable Long paperId) {
@@ -103,8 +108,7 @@ public class PaperController {
         return ResponseBean.TRUE;
     }
 
-
-
+    @PermissionAdmin
     @RequestMapping(value = "/disable", method = RequestMethod.GET)
     @ResponseBody
     public ResponseBean disable(Long paperId, @RequestParam(defaultValue = "true") Boolean disable) {
@@ -119,8 +123,5 @@ public class PaperController {
         PaperBean paperBean = paperService.getPaperBean(paperId);
         ExportTextUtil.writeToTxt(response, paperBean.toText(), paperBean.getName());
     }
-
-
-
 
 }

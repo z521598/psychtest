@@ -25,7 +25,7 @@
             '<li>\
             <input type="text" value="请输入选项内容" name="question'+i+'-option'+optionIndexs[i]+'-content"/>\
             &nbsp;&nbsp;\
-            <input type="text" value="请输入分数" name="question'+i+'-option'+optionIndexs[i]+'-mark"/>分\
+            <input type="text" value="0" name="question'+i+'-option'+optionIndexs[i]+'-mark"/>分\
             &nbsp;&nbsp;\
             <input type="button" value="删除此选项" onClick="delOption(this)">\
         </li>'
@@ -43,7 +43,7 @@
                 <li>\
                     <input type="text" value="请输入选项内容" name="question'+index+'-option0-content"/>\
                     &nbsp;&nbsp; \
-                    <input type="text" value="请输入分数" name="question'+index+'-option0-mark"/>分\
+                    <input type="text" value="0" name="question'+index+'-option0-mark"/>分\
                     &nbsp;&nbsp; \
                     <input type="button" value="删除此选项" onClick="delOption(this)">\
                     \
@@ -81,7 +81,7 @@
                             <li>
                                 <input type="text" value="请输入选项内容" name="question0-option0-content"/>
                                 &nbsp;&nbsp;
-                                <input type="text" value="请输入分数" name="question0-option0-mark"/>分
+                                <input type="text" value="0" name="question0-option0-mark"/>分
                                 &nbsp;&nbsp;
                                 <input type="button" value="删除此选项" onClick='delOption(this)'>
                             </li>

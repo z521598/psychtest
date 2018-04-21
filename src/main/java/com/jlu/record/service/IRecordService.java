@@ -21,4 +21,6 @@ public interface IRecordService {
     void delete(Long recordId);
 
     void deleteByPaperId(Long paperId);
+
+    Boolean checkPermission(Long id, String username);
 }
