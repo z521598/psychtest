@@ -12,7 +12,7 @@
 </head>
 <body>
 <center>
-    <img src="/resources/img/500.jpg"/>
+    <img src="/resources/img/500.png"/>
     <br/>
     ${msg}
 </center>

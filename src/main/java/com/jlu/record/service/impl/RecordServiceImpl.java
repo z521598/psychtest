@@ -1,5 +1,6 @@
 package com.jlu.record.service.impl;
 
+import com.jlu.common.exception.PsychtestRuntimeException;
 import com.jlu.paper.bean.OptionBean;
 import com.jlu.paper.bean.PaperBean;
 import com.jlu.paper.bean.QuestionBean;
@@ -10,6 +11,7 @@ import com.jlu.record.dao.IQuestionRecordDao;
 import com.jlu.record.model.PaperRecord;
 import com.jlu.record.model.QuestionRecord;
 import com.jlu.record.service.IRecordService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2018/4/20.
@@ -38,8 +41,10 @@ public class RecordServiceImpl implements IRecordService {
         PaperBean paperBean = paperService.getPaperBean(paperId);
         PaperRecord paperRecord = paperBean.toPaperRecord();
         paperRecordDao.saveOrUpdate(paperRecord);
-
         List<QuestionBean> questionBeanList = paperBean.getQuestions();
+        if(requestParameterMap.size() != questionBeanList.size()){
+            throw new PsychtestRuntimeException("所有的题目都必须选择,请后退继续答题");
+        }
         List<QuestionRecord> questionRecordList = new LinkedList<>();
         for (int i = 0; i < questionBeanList.size(); i++) {
             QuestionBean questionBean = questionBeanList.get(i);
@@ -51,7 +56,8 @@ public class RecordServiceImpl implements IRecordService {
             questionRecord.setPaperRecordId(paperRecord.getId());
             questionRecordList.add(questionRecord);
             Integer questionIndex = questionBean.getIndex();
-            Integer selectedIndex = Integer.parseInt(requestParameterMap.get(String.valueOf(questionIndex))[0]);
+            String value = requestParameterMap.get(String.valueOf(questionIndex))[0];
+            Integer selectedIndex = Integer.parseInt(value);
             questionRecord.setSelectedOption(selectedIndex);
             OptionBean optionBean = questionBean.getOptionByIndex(selectedIndex);
             questionRecord.setMark(optionBean.getMark());
@@ -60,6 +66,7 @@ public class RecordServiceImpl implements IRecordService {
         }
         return paperRecord.getId();
     }
+
 
     @Override
     public RecordBean get(Long recordId) {

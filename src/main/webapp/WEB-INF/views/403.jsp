@@ -11,8 +11,10 @@
     <title>403</title>
 </head>
 <body>
-<img src="/resources/img/403.png"/>
-<br/>
-${msg}
+<center>
+    <img src="/resources/img/403.png"/>
+    <br/>
+    <h1>${msg}</h1>
+</center>
 </body>
 </html>

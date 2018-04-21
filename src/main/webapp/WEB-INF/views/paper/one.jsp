@@ -16,7 +16,7 @@
     <title>问卷</title>
 </head>
 <body>
-<form action="/record/submit/${paperBean.id}" method="post" enctype="multipart/form-data" onsubmit="return test()">
+<form action="/record/submit/${paperBean.id}" method="post" enctype="multipart/form-data">
     <center>${paperBean.name}</center>
     <br/>
     <p>${paperBean.guide}</p>
