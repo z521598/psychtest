@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="logStoreDirectory" value="/logs/pipeline"/>
+    <property name="logStoreDirectory" value="/logs/psychtest"/>
 
     <!-- pipeline日志 -->
     <appender name="pipelineAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${logStoreDirectory}/pipeline.log</File>
+        <File>${logStoreDirectory}/psychtest.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.pipeline.%i.log</fileNamePattern>
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.psychtest.%i.log</fileNamePattern>
             <maxHistory>20</maxHistory>
             <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>50MB</maxFileSize>
@@ -44,7 +44,7 @@
             <level>ERROR</level>
         </filter>
 
-        <File>${logStoreDirectory}/pipeline_error.log</File>
+        <File>${logStoreDirectory}/psychtest_error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <FileNamePattern>${logStoreDirectory}/history/pipeline_error.log.%i.log</FileNamePattern>
             <MinIndex>1</MinIndex>
@@ -71,7 +71,7 @@
         <File>${logStoreDirectory}/pipeline_access.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.pipeline_access.%i.log
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.psychtest_access.%i.log
             </fileNamePattern>
             <maxHistory>20</maxHistory>
             <TimeBasedFileNamingAndTriggeringPolicy
