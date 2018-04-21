@@ -41,4 +41,10 @@ public class OptionBean {
         sb.append('}');
         return sb.toString();
     }
+
+    public String toText() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("内容：").append(content).append("(").append(mark).append("分）");
+        return sb.toString();
+    }
 }

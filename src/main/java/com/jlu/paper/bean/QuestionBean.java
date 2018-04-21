@@ -88,7 +88,7 @@ public class QuestionBean {
     }
 
 
-    public Question toQuestion(Long paperId){
+    public Question toQuestion(Long paperId) {
         Question question = new Question();
         question.setPaperId(paperId);
         question.setName(name);
@@ -104,11 +104,20 @@ public class QuestionBean {
     }
 
     public OptionBean getOptionByIndex(Integer selectedIndex) {
-        for(OptionBean optionBean : optionBeanList){
-            if(optionBean.getIndex().equals(selectedIndex)){
+        for (OptionBean optionBean : optionBeanList) {
+            if (optionBean.getIndex().equals(selectedIndex)) {
                 return optionBean;
             }
         }
         return null;
+    }
+
+    public String toText() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name).append("\n");
+        for (OptionBean optionBean : optionBeanList) {
+            sb.append("\t").append(optionBean.toText()).append("\n");
+        }
+        return sb.toString();
     }
 }

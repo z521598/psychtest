@@ -66,4 +66,17 @@ public class Paper {
     public void setConclusionFilePath(String conclusionFilePath) {
         this.conclusionFilePath = conclusionFilePath;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Paper{");
+        sb.append("id=").append(id);
+        sb.append(", guide='").append(guide).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", newTime=").append(newTime);
+        sb.append(", disable=").append(disable);
+        sb.append(", conclusionFilePath='").append(conclusionFilePath).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

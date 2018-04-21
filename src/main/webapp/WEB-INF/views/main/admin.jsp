@@ -64,7 +64,7 @@
 								<img class="left-icon-child" src="/resources/img/sellMain_images/32/4992_user.png" />
 								<span class="left-body"> 用户信息</span>
 							</div>
-							<div class="accordion-inner" id = "seller">
+							<div class="accordion-inner" id = "records">
 								<img class="left-icon-child"
 									src="/resources/img/sellMain_images/32/20130508035646751_easyicon_net_32.png" /><span
 									class="left-body"> 测评信息</span>

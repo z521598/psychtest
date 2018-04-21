@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by Administrator on 2018/4/20.
  */
 @Service
-public class RecordServiceImpl implements IRecordService{
+public class RecordServiceImpl implements IRecordService {
 
     @Autowired
     private IPaperRecordDao paperRecordDao;
@@ -41,10 +41,10 @@ public class RecordServiceImpl implements IRecordService{
 
         List<QuestionBean> questionBeanList = paperBean.getQuestions();
         List<QuestionRecord> questionRecordList = new LinkedList<>();
-        for(int i = 0 ; i < questionBeanList.size() ;i++){
+        for (int i = 0; i < questionBeanList.size(); i++) {
             QuestionBean questionBean = questionBeanList.get(i);
             QuestionRecord questionRecord = new QuestionRecord();
-            BeanUtils.copyProperties(questionBean,questionRecord);
+            BeanUtils.copyProperties(questionBean, questionRecord);
             questionRecord.setId(null);
             questionRecord.setPaperId(paperId);
             questionRecord.setQuestionId(questionBean.getId());
@@ -65,11 +65,34 @@ public class RecordServiceImpl implements IRecordService{
     public RecordBean get(Long recordId) {
         RecordBean recordBean = new RecordBean();
         PaperRecord paperRecord = paperRecordDao.findById(recordId);
-        BeanUtils.copyProperties(paperRecord,recordBean);
+        BeanUtils.copyProperties(paperRecord, recordBean);
         List<QuestionRecord> questionRecordList = questionRecordDao.find(recordId);
-        for(QuestionRecord questionRecord : questionRecordList){
+        for (QuestionRecord questionRecord : questionRecordList) {
             recordBean.addQuestionRecord(questionRecord.toBean());
         }
         return recordBean;
+    }
+
+    @Override
+    public List<PaperRecord> getAll() {
+        return paperRecordDao.findByProperties(null);
+    }
+
+    @Override
+    public List<PaperRecord> get(String username) {
+        return paperRecordDao.find(username);
+
+    }
+
+    @Override
+    public void delete(Long recordId) {
+        List<QuestionRecord> questionRecords = questionRecordDao.find(recordId);
+        for (int i = 0; questionRecords != null && i < questionRecords.size(); i++) {
+            questionRecordDao.delete(questionRecords.get(i));
+        }
+        PaperRecord paperRecord = paperRecordDao.findById(recordId);
+        if (recordId != null) {
+            paperRecordDao.delete(paperRecord);
+        }
     }
 }

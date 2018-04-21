@@ -1,14 +1,14 @@
 package com.jlu.user.web;
 
 import com.jlu.common.web.AbstractController;
+import com.jlu.common.web.ResponseBean;
+import com.jlu.user.model.Role;
 import com.jlu.user.model.User;
 import com.jlu.user.service.IUserService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -25,9 +25,18 @@ public class UserController extends AbstractController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String login(User user) {
-        System.out.println(user);
+        user.setRole(Role.USER);
+        user.setDisable(false);
         userService.saveOrUpdateUser(user);
         return "forward:/user/login";
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(User user) {
+        user.setRole(Role.USER);
+        user.setDisable(false);
+        userService.saveOrUpdateUser(user);
+        return "";
     }
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)
@@ -41,8 +50,18 @@ public class UserController extends AbstractController {
         }
     }
 
+    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    public ModelAndView all(@PathVariable String username) {
+        ModelAndView modelAndView = new ModelAndView();
+        User user = userService.getUserByName(username);
+        modelAndView.addObject("user", user);
+        System.out.println(user);
+        modelAndView.setViewName("user/one");
+        return modelAndView;
+    }
+
+
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    @ResponseBody
     public ModelAndView all() {
         ModelAndView modelAndView = new ModelAndView();
         List<User> users = userService.findAll();
@@ -50,5 +69,15 @@ public class UserController extends AbstractController {
         modelAndView.setViewName("user/users");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/disable", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseBean disable(String username, @RequestParam(defaultValue = "true") Boolean disable) {
+        User user = userService.getUserByName(username);
+        user.setDisable(disable);
+        userService.saveOrUpdateUser(user);
+        return ResponseBean.TRUE;
+    }
+
 
 }

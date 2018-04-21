@@ -3,6 +3,7 @@ package com.jlu.user.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -27,10 +28,23 @@ public class User {
 
     private String email;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
+    @Transient
+    private String bir;
+
     private String profession;
+
+    private Boolean disable;
+
+    public Boolean getDisable() {
+        return disable;
+    }
+
+    public void setDisable(Boolean disable) {
+        this.disable = disable;
+    }
 
     public Integer getId() {
         return id;
@@ -102,6 +116,14 @@ public class User {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public String getBir() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(birthday);
+    }
+
+    public void setBir(String bir) {
+        this.bir = bir;
     }
 
     @Override

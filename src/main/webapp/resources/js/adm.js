@@ -30,8 +30,8 @@ $("#journalAccount").click(function(){
 $("#seller_info").click(function(){
 	$("#ifr").attr("src","adminNav/seller_info.jsp");
 });
-$("#seller").click(function(){
-	$("#ifr").attr("src","store/findAllSeller.action");
+$("#records").click(function(){
+	$("#ifr").attr("src","record/all");
 });
 $("#updatePassword").click(function(){
 	$("#ifr").attr("src","adminNav/updatePassword.jsp");

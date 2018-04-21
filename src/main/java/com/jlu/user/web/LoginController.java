@@ -29,10 +29,14 @@ public class LoginController extends AbstractController {
             model.addAttribute("wrongMsg", "用户名或者密码错误");
             return "login";
         }
+        if (activeUser.getDisable()) {
+            model.addAttribute("wrongMsg", "账户被封禁");
+            return "login";
+        }
         request.getSession().setAttribute(User.CURRENT_USER_NAME, activeUser);
         if (Role.ADMIN.equals(activeUser.getRole())) {
             return "main/admin";
-        } else {
+        } else{
             return "main/user";
         }
 
