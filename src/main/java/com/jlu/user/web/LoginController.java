@@ -36,11 +36,7 @@ public class LoginController extends AbstractController {
             return "login";
         }
         request.getSession().setAttribute(User.CURRENT_USER_NAME, activeUser);
-        if (Role.ADMIN.equals(activeUser.getRole())) {
-            return "main/admin";
-        } else{
-            return "main/user";
-        }
+        return "redirect:/";
 
     }
 
