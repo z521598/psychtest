@@ -71,9 +71,9 @@
             return test($("#firstaddress").val().trim() != "", "#flab");
         }
         function AJAXTestUsername() {
-            $.get("user/query?username="+$("#username").val(), function (data) {
+            $.get("user/query?username=" + $("#username").val(), function (data) {
                         return test($("#username").val().trim().length >= 5 && !data, "#ilab");
-            }
+                    }
             );
         }
         function testAll() {
@@ -89,58 +89,64 @@
 
 <body>
 <form action="user" onsubmit="return testAll()" method="post">
-    <table border="1" cellspacing="0">
-        <tr>
-            <td>用户名：</td>
-            <td><input type="text" name="username" id="username" onblur="AJAXTestUsername()"><label id="ilab"></label></td>
-        </tr>
-        <tr>
-            <td>密码：</td>
-            <td><input type="password" name="password" id="password" onblur="testPassword()"><label id="plab"></label>
-            </td>
-        </tr>
-        <tr>
-            <td>确认密码：</td>
-            <td><input type="password" name="repeatpassword" id="repeatpassword" onblur="testRepeatPassword()"><label
-                    id="rlab"></label></td>
-        </tr>
-        <tr>
-            <td>姓名：</td>
-            <td><input type="text" name="name" id="name" onblur="testName()"><label id="nlab"></label></td>
-        </tr>
-        <tr>
-            <td>职业：</td>
-            <td><input type="text" name="profession" id="profession"><label id="prlab"></label></td>
-        </tr>
+    <center>
+        <table border="1" cellspacing="0">
+            <tr>
+                <td>用户名：</td>
+                <td><input type="text" name="username" id="username" onblur="AJAXTestUsername()"><label
+                        id="ilab"></label></td>
+            </tr>
+            <tr>
+                <td>密码：</td>
+                <td><input type="password" name="password" id="password" onblur="testPassword()"><label
+                        id="plab"></label>
+                </td>
+            </tr>
+            <tr>
+                <td>确认密码：</td>
+                <td><input type="password" name="repeatpassword" id="repeatpassword"
+                           onblur="testRepeatPassword()"><label
+                        id="rlab"></label></td>
+            </tr>
+            <tr>
+                <td>姓名：</td>
+                <td><input type="text" name="name" id="name" onblur="testName()"><label id="nlab"></label></td>
+            </tr>
+            <tr>
+                <td>职业：</td>
+                <td><input type="text" name="profession" id="profession"><label id="prlab"></label></td>
+            </tr>
 
-        <tr>
-            <td>性别：</td>
-            <td>
-                <input type="radio" name="sex" value="男" onblur="testSex()"/>男
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="sex" value="女" onblur="testSex()"/>女
-                <label id="slab"></label>
-            </td>
-        </tr>
-        <tr>
-            <td>出生日期：</td>
-            <td><input type="date" id="birthday" name="birthday" onblur="testBirthday()"/><label id="blab"></label></td>
-        </tr>
-        <tr>
-            <td>电子邮箱：</td>
-            <td><input type="text" id="email" name="email" onblur="testEmail()"/><label id="elab"></label></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <font size=2 color=blue>我已阅读并同意《<a href="">心理测评服务条款和隐私政策</a>》</font>
-                <input type="checkbox" id="hadRead" onblur="testHadRead" onclick="testHadRead()"/>
-                <label id="hlab"></label>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><input type="submit" id="submit" value="注册"></td>
-        </tr>
-    </table>
+            <tr>
+                <td>性别：</td>
+                <td>
+                    <input type="radio" name="sex" value="男" onblur="testSex()"/>男
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="sex" value="女" onblur="testSex()"/>女
+                    <label id="slab"></label>
+                </td>
+            </tr>
+            <tr>
+                <td>出生日期：</td>
+                <td><input type="date" id="birthday" name="birthday" onblur="testBirthday()"/><label id="blab"></label>
+                </td>
+            </tr>
+            <tr>
+                <td>电子邮箱：</td>
+                <td><input type="text" id="email" name="email" onblur="testEmail()"/><label id="elab"></label></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <font size=2 color=blue>我已阅读并同意《<a href="/jsp/info.jsp" target="_blank">心理测评服务条款和隐私政策</a>》</font>
+                    <input type="checkbox" id="hadRead" onblur="testHadRead" onclick="testHadRead()"/>
+                    <label id="hlab"></label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" id="submit" value="注册"></td>
+            </tr>
+        </table>
+    </center>
 </form>
 </body>
 </html>
