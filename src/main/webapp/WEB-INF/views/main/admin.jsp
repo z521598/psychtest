@@ -89,7 +89,7 @@
 			</div>
 			<div class="span10 content-right" style = "overflow-y:hidden">
 
-				<iframe src="../../../adminNav/home.jsp" class="iframe" id = "ifr"></iframe>
+				<iframe src="/jsp/home.jsp" class="iframe" id = "ifr"></iframe>
 
 			</div>
 		</div>

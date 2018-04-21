@@ -64,11 +64,7 @@
     </c:forEach>
 </table>
 <br/>
-<%
-    if(((User)session.getAttribute("currentUser")).getRole().equals(Role.ADMIN)){
-%>
 &nbsp;&nbsp;&nbsp;&nbsp;
-<input type="button" onClick="location.href='/paper/add.jsp'" value="添加问卷"/>
-<%}%>
+<input type="button" onClick="location.href='/jsp/addPaper.jsp'" value="添加问卷"/>
 </body>
 </html>

@@ -7,9 +7,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title></title>
+    <title>首页</title>
+    <script type="text/javascript">
+
+    </script>
   </head>
-  <body>
-	${oneOrders.oid}
+  <body style="background-color:#00BB99;margin-top:20px;margin-left:20px">
+	  <center>
+		  <h3 class="text-warning text-center" style = "color : #ffffff">
+			  欢迎您
+		  </h3>
+	  </center>
   </body>
 </html>
