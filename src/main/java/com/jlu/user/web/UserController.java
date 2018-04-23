@@ -92,7 +92,8 @@ public class UserController extends AbstractController {
         User user = userService.getUserById(userId);
         user.setPassword(password);
         userService.saveOrUpdateUser(user);
-        mav.setViewName("../adminNav/updatePassword.jsp");
+        mav.setViewName("login");
+        mav.addObject("wrongMsg", "修改密码成功，请重新登录");
         return mav;
     }
 

@@ -39,9 +39,18 @@
                 return false;
             }
         }
+        function testFont(require, lab, font) {
+            if (require) {
+                $(lab).html(right());
+                return true;
+            } else {
+                $(lab).html(wrong() + font);
+                return false;
+            }
+        }
         function testUsername() {
             //注意加return
-            return test($("#id").val().trim().length >= 5, "#ilab");
+            return test($("#username").val().trim().length >= 5, "#ilab");
         }
         function testPassword() {
             return test($("#password").val().trim().length >= 6, "#plab");
@@ -68,12 +77,9 @@
         function testBirthday() {
             return test($("#birthday").val().match("(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"), "#blab");
         }
-        function testFirstAddress() {
-            return test($("#firstaddress").val().trim() != "", "#flab");
-        }
         function AJAXTestUsername() {
-            $.post("user/registtest.action", {username: $("#username").val()}, function (data) {
-                        return test($("#username").val().trim().length >= 5 && data, "#ilab");
+            $.get("user/query?username=" + $("#username").val(), function (data) {
+                        return testFont($("#username").val().trim().length >= 5, "#ilab", "不得少于5位") && testFont(!data, "#ilab", "用户名重复");
                     }
             );
         }
@@ -112,7 +118,7 @@
         </tr>
         <tr>
             <td>职业：</td>
-            <td><input type="text" name="profession" id="profession" value="${user.profession}"><label id="prlab"></label></td>
+            <td><input type="text" name="profession" id="profession" value="${user.profession}"  onblur="testProfession()"><label id="prlab"></label></td>
         </tr>
 
         <tr>

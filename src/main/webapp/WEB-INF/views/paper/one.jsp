@@ -1,3 +1,5 @@
+<%@ page import="com.jlu.user.model.Role" %>
+<%@ page import="com.jlu.user.model.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -40,9 +42,14 @@
     </fieldset>
     <br/>
     <hr/>
+    <%
+        if (((User) session.getAttribute("currentUser")).getRole().equals(Role.USER)) {
+    %>
     <center>
         <input type="submit" value="提交测评" id="submit"/><label id="msg"></label>
     </center>
+    <%}%>
+
 </form>
 </body>
 </html>

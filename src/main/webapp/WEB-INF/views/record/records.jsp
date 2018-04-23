@@ -50,7 +50,7 @@ if(((User)session.getAttribute("currentUser")).getRole().equals(Role.ADMIN)){
                 %>
                 <a href="javascript:void(0)" onclick="del(${everyRecord.id})">删除</a>
                 <%}%>
-
+                <a href="/record/${everyRecord.id}" target="_blank">查看</a>
                 <a href="${everyRecord.id}/file">导出记录</a>
             </td>
         </tr>

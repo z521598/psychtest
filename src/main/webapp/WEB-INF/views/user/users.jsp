@@ -42,12 +42,12 @@
                         <td>${everyUser.sex}</td>
                         <td align="center">
                             <c:if test="${everyUser.disable}">
-                                <a href="javascript:void(0)" onClick="disable(${everyUser.username},false)">
+                                <a href="javascript:void(0)" onClick="disable('${everyUser.username}'',false)">
                                     解禁
                                 </a>
                             </c:if>
                             <c:if test="${!everyUser.disable}">
-                                <a href="javascript:void(0)" onClick="disable(${everyUser.username},true)"/>封禁
+                                <a href="javascript:void(0)" onClick="disable('${everyUser.username}',true)"/>封禁
                                 </a>
                             </c:if>
                             <a href="/user/${everyUser.username}" target="oneUser">修改</a>
